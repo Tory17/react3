@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <title>Создание клиента</title>
+</head>
+<body>
+    <form id='addClient'@submit="checkForm">
+        <p v-if='errs.lenght'>
+            <b>Пожалуста,исправте ошибки перед отправкой!</b> 
+            <ul>
+                <li v-for="err in errs">{{err}}</li>
+            </ul>
+        </p>
+        <div>
+            <label for="Sername">Фамилия</label>
+            <input type="text" id='surname' v-model='surname' name="Sername">
+        </div>
+        <div>
+            <label for="Name">Имя</label>
+            <input type="text" id='name' v-model='name' name='Name'>
+        </div>
+        <div>
+            <label for="Patronymic">Отчество</label>
+            <input type="text" id='parant'v-model='parant' name="Patronymic" >
+        </div>
+        <div>
+            <label for="Birthday">Дата рождения</label>
+            <input type="date" id='bthd' v-model='bthd' name="Birthday">
+        </div>
+        <div>
+            <label for="Number">Телефон</label>
+            <input type="number" id='number' v-model='number' name="Number">
+        </div>
+        <div>
+            <label for="male"></label>
+            <input type="radio" name="male" id='male' value="male">Мужской
+            <input type="radio" name="male" id="female" value="female">Женский
+        </div>
+        <div>
+            <label for="group"> Группа Клиентов</label>
+            <select name="group" id="group">
+                <option  v-for="item in group" >{{item}}</option>
+
+            </select>
+        </div>
+        <p> <input type="submit" value="Отправить"></p>
+
+    </form>
+
+
+    <script>
+        const Client= new Vue({
+            el:'#addClient',
+            data:{
+                errs:[],
+                surname:null,
+                name:null,
+                parant:'',
+                bthd:'',
+                number:'',
+                group:['VIP','Проблемные','ОМС']
+            },
+            methods:{
+                checkForm:function(e){
+                    if(this.surname && this.name && this.bthd) return true;
+
+                    this.errs=[];
+
+                    if(!this.surname){
+                        this.errs.push('Укажите Фамилию')
+                    }   
+                    
+                    
+                    if(!this.name){
+                        this.errs.push('Укажите Имя')
+                    } 
+
+                    if(!this.bthd){
+                        this.errs.push('Укажите дату рождения')
+                    }
+                    
+                    if (!this.number) {
+                         this.errs.push('Укажите номер телефона');
+                            } else if (!this.validNumber(this.number)) {
+                            this.errors.push('Номер состоит из 11 цифр и начинается с 7');
+                         }
+                    e.preventDefault();
+                },
+                validNumber:function(number){
+                    let num=/^7[\d]{10,11}\d$/
+                    return num.test(number)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
